@@ -278,8 +278,12 @@ void ToolWindow::proSetting()
     }
     //connect
     if((nexecResult = m_proSetWiz->exec()))
-    {
+    {   
+#if 0
         QMessageBox::information(this, QObject::tr("工程向导"),QObject::tr("参数设置完成"));
+#else
+        QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Finishing setting the project configurations!"));
+#endif
 
         /*根据设置的参数来 判断是否进行重新创建工程对象*/
         if(!currentPrj)
@@ -290,9 +294,9 @@ void ToolWindow::proSetting()
             connect(pthread,SIGNAL(codeFileChanged()),this,SLOT(updateIndicate()));
             connect(currentPrj,SIGNAL(updateProgressBar(int)),this,SLOT(changeProgressBar(int)));
 
-            listWindow->addMessage("info","EziDebug info: create new project!");
-            QStandardItem * pitem = listWindow->addMessage("info",tr("The new project parameter:"));
-            listWindow->addMessage("process",tr("      The chain max reg number: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
+            listWindow->addMessage("info","EziDebug info: open new project!");
+            QStandardItem * pitem = listWindow->addMessage("info",tr("The current project parameter:"));
+            listWindow->addMessage("process",tr("      The  maximum register number of scan chain: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
             listWindow->addMessage("process",tr("      The current project path: %1").arg(m_proSetWiz->m_icurrentDir),pitem);
             listWindow->addMessage("process",tr("      The compile software: \"%1\"").arg((m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
         }
@@ -304,9 +308,9 @@ void ToolWindow::proSetting()
                     &&(m_proSetWiz->m_isXilinxErrChecked == currentPrj->getSoftwareXilinxErrCheckedFlag()))
             {
                 /*do nothing*/
-                listWindow->addMessage("info","EziDebug info: The project parameter is same as before!");
-                QStandardItem * pitem = listWindow->addMessage("process",tr("The new project parameter:"));
-                listWindow->addMessage("info",tr("      The chain max reg number: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
+                listWindow->addMessage("info","EziDebug info: The project parameters are the same as before!");
+                QStandardItem * pitem = listWindow->addMessage("process",tr("The new project parameters:"));
+                listWindow->addMessage("info",tr("      The  maximum register number of scan chain: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
                 listWindow->addMessage("info",tr("      The current project path: %1").arg(m_proSetWiz->m_icurrentDir),pitem);
                 listWindow->addMessage("info",tr("      The compile software: \"%1\"").arg((m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
             }
@@ -325,10 +329,15 @@ void ToolWindow::proSetting()
                 connect(pthread,SIGNAL(codeFileChanged()),this,SLOT(updateIndicate()));
                 connect(currentPrj,SIGNAL(updateProgressBar(int)),this,SLOT(changeProgressBar(int)));
 
+				#if 0
                 QMessageBox::information(this, QObject::tr("工程设置"),QObject::tr("准备解析新的工程！"));
+				#else
+				QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Ready to parse new project!"));
+				#endif
+				
                 listWindow->addMessage("info","EziDebug info: The project is changed !");
-                QStandardItem * pitem = listWindow->addMessage("warning",tr("The new project parameter:"));
-                listWindow->addMessage("warning",tr("      The chain max reg number: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
+                QStandardItem * pitem = listWindow->addMessage("warning",tr("The new project parameters:"));
+                listWindow->addMessage("warning",tr("      The  maximum register number of scan chain: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
                 listWindow->addMessage("warning",tr("      The current project path: %1").arg(m_proSetWiz->m_icurrentDir),pitem);
                 listWindow->addMessage("warning",tr("      The compile software: \"%1\"").arg((m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
 
@@ -341,8 +350,8 @@ void ToolWindow::proSetting()
 
                 /*重新设置工程参数*/
                 currentPrj->setToolType(m_proSetWiz->m_ecurrentTool);
-                listWindow->addMessage("warning","EziDebug warning: The project's parameters have changed!");
-                listWindow->addMessage("warning","EziDebug warning: Please delete all scan chain and insert the chain again!");
+                listWindow->addMessage("warning","EziDebug warning: The project's parameters have been changed!");
+                listWindow->addMessage("warning","EziDebug warning: Please delete all scan chains and insert the chain again!");
 
 
                 bool eneededCreateTestBenchFlag = false ;
@@ -360,7 +369,11 @@ void ToolWindow::proSetting()
                 if(eneededCreateTestBenchFlag)
                 {
                     /*提示是否重新生成testbench*/
+					#if 0
                     QMessageBox::information(this, QObject::tr("工程设置"),QObject::tr("原代码中存在扫描链,请删除所有链之后重新添加并生成相应的testBench文件!"));
+					#else
+					QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The existed scan chain isn't available, Plesase delete it !"));
+					#endif
                 }
 
                 delete currentPrj ;
@@ -375,10 +388,15 @@ void ToolWindow::proSetting()
                 connect(pthread,SIGNAL(codeFileChanged()),this,SLOT(updateIndicate()));
                 connect(currentPrj,SIGNAL(updateProgressBar(int)),this,SLOT(changeProgressBar(int)));
 
+				#if 0
                 QMessageBox::information(this, QObject::tr("工程设置"),QObject::tr("准备解析新的工程！"));
+				#else
+				QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Ready to parse project!"));
+				#endif
+				
                 listWindow->addMessage("info","EziDebug info: The project is changed !");
                 QStandardItem * pitem = listWindow->addMessage("warning",tr("The new project parameter:"));
-                listWindow->addMessage("warning",tr("      The chain max reg number: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
+                listWindow->addMessage("warning",tr("      The  maximum register number of scan chain: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
                 listWindow->addMessage("warning",tr("      The current project path: %1").arg(m_proSetWiz->m_icurrentDir),pitem);
                 listWindow->addMessage("warning",tr("      The compile software: \"%1\"").arg((m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
 
@@ -389,11 +407,15 @@ void ToolWindow::proSetting()
                 {
                     /*重新设置工程参数*/
                     currentPrj->setMaxRegNumPerChain(m_proSetWiz->m_uncurrentRegNum);
-                    listWindow->addMessage("info","EziDebug info: The project parameter is changed ,!");
+                    listWindow->addMessage("info","EziDebug info: The project parameter is changed !");
                     if(currentPrj->getScanChainInfo().count())
                     {
                         /*提示重新添加链 并重新生成testbench*/
+						#if 0
                         QMessageBox::information(this, QObject::tr("工程设置"),QObject::tr("最大链寄存器个数已更改,之前所加扫描链不可用,请删除所有扫描链！"));
+						#else
+						QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The  maximum register number of scan chain has been changed, \n Please delete all scan chain codes inserted before!"));
+						#endif
                     }
                 }
 
@@ -401,12 +423,16 @@ void ToolWindow::proSetting()
                 if((m_proSetWiz->m_isXilinxErrChecked != currentPrj->getSoftwareXilinxErrCheckedFlag())&&(m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolIse))
                 {
                     /*提示是否重新生成testbench*/
+					#if 0
                     QMessageBox::warning(this, QObject::tr("工程设置"),QObject::tr("注意在 Xilinx 工程下 可能会导致 扫描链截取信号不正确!"));
+					#else
+					QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Note: With Xilinx,information of scan chains may be mistaken!"));
+					#endif
                     /**/
                 }
 
-                QStandardItem * pitem = listWindow->addMessage("warning",tr("The new project parameter:"));
-                listWindow->addMessage("process",tr("      The chain max reg number: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
+                QStandardItem * pitem = listWindow->addMessage("warning",tr("The new project parameters:"));
+                listWindow->addMessage("process",tr("      The  maximum register number of scan chain: %1").arg(m_proSetWiz->m_uncurrentRegNum),pitem);
                 listWindow->addMessage("process",tr("      The current project path: %1").arg(m_proSetWiz->m_icurrentDir),pitem);
                 listWindow->addMessage("process",tr("      The compile software: \"%1\"").arg((m_proSetWiz->m_ecurrentTool == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
 
@@ -430,8 +456,13 @@ void ToolWindow::proUpdate()
     QStringList ideletedChainList ;
 
     if(!currentPrj)
-    {
+    {   
+#if 0
         QMessageBox::information(this, QObject::tr("全部更新"),QObject::tr("您所指定的工程不存在或者未设置工程参数!"));
+#else
+        QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The project is not existed or the project parameter is NULL!"));
+#endif
+		
         return ;
     }
 
@@ -449,11 +480,15 @@ void ToolWindow::proUpdate()
     {
         if(isNeededUpdate)
         {
-            listWindow->addMessage("info","EziDebug info: You can continue to update Project!");
+            listWindow->addMessage("info","EziDebug info: You can continue to update project!");
         }
         else
-        {
+        {   
+#if 0
             QMessageBox::information(this, QObject::tr("全部更新"),QObject::tr("无文件可更新!"));
+#else
+            QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("No file changed in project!"));
+#endif
             progressBar->setValue(0);
 
             return ;
@@ -502,11 +537,13 @@ void ToolWindow::proUpdate()
             setCurrentProject(NULL);
 
             // 0%
+#if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update project failed -- The software interior error!"));
+#endif
 
             progressBar->setValue(0);
-
-
             return ;
         }
         etype = EziDebugPrj::partScanType ;
@@ -527,7 +564,7 @@ void ToolWindow::proUpdate()
         // scan file all over (can't find the deleted file)
         if(currentPrj->traverseAllCodeFile(etype ,ivlgFileMap , ivhdlFileMap ,iaddedinfoList,ideletedinfoList))
         {
-            listWindow->addMessage("error","EziDebug error: traverseAllCodeFile encounter the error !");
+            listWindow->addMessage("error","EziDebug error: traverse code file error !");
 
             QMap<QString,EziDebugVlgFile*>::iterator i =  ivlgFileMap.begin() ;
             while(i != ivlgFileMap.end())
@@ -560,8 +597,11 @@ void ToolWindow::proUpdate()
             qDeleteAll(iaddedinfoList);
             qDeleteAll(ideletedinfoList);
 
-
+#if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update project failed -- The software interior error!"));
+#endif
             // 0%
             progressBar->setValue(0);
 
@@ -583,11 +623,15 @@ void ToolWindow::proUpdate()
 
         if(!currentPrj->getPrjModuleMap().contains(itopModule))
         {
-            listWindow->addMessage("error","EziDebug error: There is no Topmodule definition!");
+            listWindow->addMessage("error","EziDebug error: There is no top module definition!");
             delete currentPrj ;
             setCurrentProject(NULL);
 
+#if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update project failed -- The software interior error!"));
+#endif
 
             progressBar->setValue(0);
 
@@ -604,7 +648,11 @@ void ToolWindow::proUpdate()
             delete currentPrj ;
             setCurrentProject(NULL);
 
+#if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update project failed -- The software interior error!"));
+#endif
 
             progressBar->setValue(0);
 
@@ -618,8 +666,13 @@ void ToolWindow::proUpdate()
         if(currentPrj->traverseModuleTree(itopModuleComboName,pnewHeadItem))
         {
             listWindow->addMessage("error","EziDebug error: fast update failed!");
-            QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
 
+#if 0
+            QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update project failed -- The software interior error!"));
+#endif
+			
             progressBar->setValue(0);
             return ;
         }
@@ -636,7 +689,7 @@ void ToolWindow::proUpdate()
             QStringList idestroyedChainList = currentPrj->getDestroyedChainList() ;
 
             listWindow->addMessage("warning","EziDebug warning: Some chains are destroyed!");
-            listWindow->addMessage("warning","the destroyed chain are:");
+            listWindow->addMessage("warning","the destroyed chains are:");
             for(int i = 0 ; i < idestroyedChainList.count() ;i++)
             {
                 QString ichainName = idestroyedChainList.at(i) ;
@@ -651,18 +704,23 @@ void ToolWindow::proUpdate()
             }
 
             // 扫描链被破坏 ,提示删除
+            #if 0
             QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链被破坏"), tr("是否删除相关扫描链代码"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#else
+			QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("Some scan chains have been destroyed ,\n Do you want to delete all scan chain code ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#endif
+			
             if(rb == QMessageBox::Yes)
             {
                 QStringList iunDelChainList = currentPrj->deleteDestroyedChain(iaddedinfoList,ideletedinfoList) ;
                 if(iunDelChainList.count())
                 {
-                    listWindow->addMessage("error","EziDebug error: Some chains do not be deleted for some reasons!");
+                    listWindow->addMessage("error","EziDebug error: Some chains can not be deleted for some reasons!");
                     for(int i = 0 ; i < iunDelChainList.count() ;i++)
                     {
                         listWindow->addMessage("error",tr("EziDebug chain:%1").arg(iunDelChainList.at(i)));
                     }
-                    listWindow->addMessage("error","EziDebug error: Please check the code file is compiled successed!");
+                    listWindow->addMessage("error","EziDebug error: Please check the code file is compiled successfully or not!");
                 }
 
                 for(int i = 0 ; i < idestroyedChainList.count() ; i++)
@@ -767,7 +825,12 @@ void ToolWindow::proUpdate()
         // 100%
         progressBar->setValue(100);
 
+		#if 0
         QMessageBox::information(this, QObject::tr("全部更新"),QObject::tr("更新代码完毕！"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Update project finished!"));
+
+		#endif
 
 
     }
@@ -780,7 +843,11 @@ void ToolWindow::proUpdate()
             delete currentPrj ;
             setCurrentProject(NULL);
 
+#if 0
             QMessageBox::warning(this, QObject::tr("全部更新失败"),QObject::tr("您所指定的工程文件不存在！"));
+#else
+            QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Update Poject failed -- The project file is not existed!"));
+#endif
 
             progressBar->setValue(0);
 
@@ -800,7 +867,13 @@ void ToolWindow::proUpdate()
                 listWindow->addMessage("error","EziDebug error: parse project file failed!");
                 delete currentPrj ;
                 setCurrentProject(NULL);
+				
+#if 0
                 QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+                QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update Project failed -- The software interior error !"));
+#endif
+				
                 progressBar->setValue(0);
 
                 return ;
@@ -810,8 +883,14 @@ void ToolWindow::proUpdate()
             progressBar->setValue(5);
 
             if(currentPrj->detectLogFile(READ_CHAIN_INFO))
-            {           
+            {   
+#if 0
                 QMessageBox::StandardButton rb = QMessageBox::question(this, tr("log文件内部被破坏"), tr("是否删除内部可能存在的扫描链代码后再进行扫描"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+#else
+                QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("EziDebug configuration file contains one or more errors ,\n Do you want to delete all scan chain codes before updating project ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+#endif
+
                 if(rb == QMessageBox::Yes)
                 {
                     // 遍历所有文件　删除可能存在的　EziDebug 代码
@@ -845,11 +924,16 @@ void ToolWindow::proUpdate()
             // 重新　创建新log文件
             if(currentPrj->createLogFile())
             {
-                listWindow->addMessage("error","EziDebug error: create EziDebug config file failed!");
+                listWindow->addMessage("error","EziDebug error: EziDebug configuration file is failed to create!");
                 delete currentPrj ;
                 setCurrentProject(NULL);
 
+				#if 0
                 QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+				#else
+				QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update Project failed -- The software interior error !"));
+				#endif
+				
                 progressBar->setValue(0);
 
                 return  ;
@@ -864,11 +948,16 @@ void ToolWindow::proUpdate()
             // 不存在则创建文件
             if(currentPrj->createLogFile())
             {
-                listWindow->addMessage("error","EziDebug error: create EziDebug config file failed!");
+                listWindow->addMessage("error","EziDebug error: EziDebug configuration file is failed to create!");
                 delete currentPrj ;
                 setCurrentProject(NULL);
 
+				#if 0
                 QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+				#else
+				QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update Project failed -- The software interior error !"));
+				#endif
+				
                 progressBar->setValue(0);
 
                 return  ;
@@ -880,7 +969,7 @@ void ToolWindow::proUpdate()
 
             if(currentPrj->parsePrjFile(ivlgFileMap,ivhdlFileMap))
             {
-                listWindow->addMessage("error","EziDebug error: parsePrjFile Error !");
+                listWindow->addMessage("error","EziDebug error: parse project file error !");
                 QMap<QString,EziDebugVlgFile*>::iterator i =  ivlgFileMap.begin() ;
                 while(i != ivlgFileMap.end())
                 {
@@ -909,8 +998,13 @@ void ToolWindow::proUpdate()
 
                 delete currentPrj ;
                 setCurrentProject(NULL);
-
+				
+#if 0
                 QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+                QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Update Project failed -- The software interior error !"));
+#endif
+				
                 progressBar->setValue(0);
 
                 return ;
@@ -921,9 +1015,11 @@ void ToolWindow::proUpdate()
             etype = EziDebugPrj::partScanType ;
         }
 
+#if 0
         QMessageBox::information(this, QObject::tr("扫描所有代码文件"),QObject::tr("准备获取module信息"));
-
-
+#else
+        QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("ready to get module information!"));
+#endif
 
         if(currentPrj->traverseAllCodeFile(etype , ivlgFileMap , ivhdlFileMap ,iaddedinfoList,ideletedinfoList))
         {
@@ -932,7 +1028,7 @@ void ToolWindow::proUpdate()
             iaddedinfoList.clear();
             ideletedinfoList.clear();
 
-            listWindow->addMessage("error","EziDebug error: traverseAllCodeFile encounter the error !");
+            listWindow->addMessage("error","EziDebug error: traverse code file failed !");
             QMap<QString,EziDebugVlgFile*>::iterator i =  ivlgFileMap.begin() ;
             while(i != ivlgFileMap.end())
             {
@@ -966,7 +1062,11 @@ void ToolWindow::proUpdate()
             qDeleteAll(iaddedinfoList);
             qDeleteAll(ideletedinfoList);
 
+#if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+#else
+            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Project Update failed -- The software interior error !"));
+#endif
             progressBar->setValue(0);
 
             return ;
@@ -976,7 +1076,7 @@ void ToolWindow::proUpdate()
         currentPrj->updateFileMap(ivlgFileMap,ivhdlFileMap);
 
         currentPrj->addToMacroMap() ;
-        listWindow->addMessage("info","EziDebug info: ready to traverse instances Tree !");
+        listWindow->addMessage("info","EziDebug info: ready to traverse instances tree !");
 
         progressBar->setValue(65);
 
@@ -989,11 +1089,16 @@ void ToolWindow::proUpdate()
 
         if(currentPrj->generateTreeView())
         {
-            listWindow->addMessage("error","EziDebug error: traverse instances Tree error !");
+            listWindow->addMessage("error","EziDebug error: traverse instances tree error !");
             delete currentPrj ;
             setCurrentProject(NULL);
-
+			
+            #if 0
             QMessageBox::critical(this, QObject::tr("全部更新失败"),QObject::tr("软件内部错误！"));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr(" Project Update failed -- The software interior error !"));
+			#endif
+			
             progressBar->setValue(0);
 
             return ;
@@ -1009,7 +1114,7 @@ void ToolWindow::proUpdate()
             currentPrj->updateOperation(EziDebugPrj::OperateTypeNone,NULL,NULL);
         }
 
-        listWindow->addMessage("info","EziDebug info: finish traverse instances Tree !");
+        listWindow->addMessage("info","EziDebug info: finishing traverse instances tree !");
 
         pitem = currentPrj->getInstanceTreeHeadItem() ;
 
@@ -1021,7 +1126,12 @@ void ToolWindow::proUpdate()
         if(currentPrj->getLogFileExistFlag()&&currentPrj->getLogfileDestroyedFlag())
         {
             // 提示删除所有链
+            #if 0
             QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链信息丢失"), tr("是否删除所有扫描链代码"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#else
+			QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("Some scan chain information have been lost, Do you want to delete all scan chain code ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#endif
+			
             if(rb == QMessageBox::Yes)
             {
                 // 删除所有链代码
@@ -1081,18 +1191,23 @@ void ToolWindow::proUpdate()
             }
 
             // 扫描链被破坏 ,提示删除
+            #if 0
             QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链被破坏"), tr("是否删除相关扫描链代码"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
-            if(rb == QMessageBox::Yes)
+            #else
+			QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("Some scan chains have been destroyed ,Do you want to delete all the scan chain code?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#endif
+			
+			if(rb == QMessageBox::Yes)
             {
                 QStringList iunDelChainList = currentPrj->deleteDestroyedChain(iaddedinfoList,ideletedinfoList) ;
                 if(iunDelChainList.count())
                 {
-                    listWindow->addMessage("error","EziDebug error: Some chains do not be deleted for some reasons!");
+                    listWindow->addMessage("error","EziDebug error: Some chains can not be deleted for some reasons!");
                     for(int i = 0 ; i < iunDelChainList.count() ;i++)
                     {
                         listWindow->addMessage("error",tr("EziDebug chain:%1").arg(iunDelChainList.at(i)));
                     }
-                    listWindow->addMessage("error","EziDebug error: Please check the code file is compiled successed!");
+                    listWindow->addMessage("error","EziDebug error: Please check the code file is compiled successfully or not!");
                 }
             }
         }
@@ -1130,7 +1245,11 @@ void ToolWindow::proUpdate()
 
         progressBar->setValue(100);
 
+		#if 0
         QMessageBox::information(this, QObject::tr("全部更新"),QObject::tr("更新代码完毕！"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Project update  finished!"));
+		#endif
 
     }
     progressBar->setValue(0);
@@ -1150,7 +1269,11 @@ int ToolWindow::deleteScanChain()
     if(isNeededUpdate)
     {
         // 提示需要 请快速更新后再进行 操作
+        #if 0
         QMessageBox::information(this, QObject::tr("删除扫描链"),QObject::tr("检测到有文件被更新,请更新后再进行删除"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before deleting scan chain !"));
+		#endif
 
         return 0 ;
     }
@@ -1160,8 +1283,13 @@ int ToolWindow::deleteScanChain()
         UpdateDetectThread *pthread = currentPrj->getThread();
         pthread->update() ;
         if(isNeededUpdate)
-        {
+        {   
+            #if 0
             QMessageBox::information(this, QObject::tr("删除扫描链"),QObject::tr("检测到有文件被更新,请更新后再进行删除"));
+			#else
+			QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before deleting scan chain !"));
+			#endif
+			
             return 0 ;
         }
     }
@@ -1169,15 +1297,25 @@ int ToolWindow::deleteScanChain()
 
     ptreeItem = listWindow->getCurrentTreeItem();
     if(!ptreeItem)
-    {
+    {   
+        #if 0
         QMessageBox::critical(this, QObject::tr("删除扫描链"),QObject::tr("软件内部错误！"));
+		#else
+		QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain failed -- The software interior error!"));
+		#endif
+		
         return 1;
     }
 
     pchain = ptreeItem->getScanChainInfo();
     if(!pchain)
-    {
+    {   
+        #if 0
         QMessageBox::critical(this, QObject::tr("删除扫描链"),QObject::tr("软件内部错误！"));
+		#else 
+		QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain failed -- The software interior error!"));
+		#endif
+		
         return 1;
     }
 
@@ -1201,7 +1339,13 @@ int ToolWindow::deleteScanChain()
         if(currentPrj->eliminateLastOperation())
         {
             listWindow->addMessage("error","EziDebug error: delete last chain error!");
+			
+			#if 0
             QMessageBox::critical(this, QObject::tr("删除扫描链"),QObject::tr("软件内部错误！"));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain failed -- The software interior error!"));
+
+			#endif
 
             return  1 ;
         }
@@ -1289,7 +1433,12 @@ int ToolWindow::deleteScanChain()
 
         pthread->start();
 
+		#if 0
         QMessageBox::information(this, QObject::tr("删除扫描链"),QObject::tr("删除扫描链成功！"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain successfully!"));
+
+		#endif
 
     }
     else
@@ -1345,7 +1494,11 @@ int ToolWindow::deleteScanChain()
 
         pthread->start();
 
+		#if 0
         QMessageBox::warning(this, QObject::tr("删除扫描链"),QObject::tr("删除扫描链失败！"));
+		#else
+		QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain failed!"));
+		#endif
 
         return 1;
     }
@@ -1371,8 +1524,12 @@ void ToolWindow::addScanChain()
     if(isNeededUpdate)
     {
         // 提示需要 请快速更新后再进行 操作
+        #if 0
         QMessageBox::information(0, QObject::tr("添加扫描链"),QObject::tr("检测到有文件被更新,请更新后再进行添加链!"));
-
+        #else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before inserting scan chain !"));
+		#endif
+		
         return ;
     }
     else
@@ -1381,8 +1538,13 @@ void ToolWindow::addScanChain()
         UpdateDetectThread *pthread = currentPrj->getThread();
         pthread->update() ;
         if(isNeededUpdate)
-        {
+        {   
+            #if 0
             QMessageBox::information(0, QObject::tr("添加扫描链"),QObject::tr("检测到有文件被更新,请更新后再进行添加链!"));
+			#else
+		    QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before inserting scan chain !"));
+			#endif
+			
             return ;
         }
     }
@@ -1391,8 +1553,14 @@ void ToolWindow::addScanChain()
     if(!ptreeItem)
     {
         /*向文本栏提示 添加链错误 该节点不存在*/
-        listWindow->addMessage("error","EziDebug error: The tree item is not exitst!");
+		
+        listWindow->addMessage("error","EziDebug error: The tree item is not exist!");
+
+		#if 0
         QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("软件内部错误!"));
+		#else
+		QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed -- The software interior error!"));
+		#endif
 
         return ;
     }
@@ -1403,8 +1571,13 @@ void ToolWindow::addScanChain()
         if(!pmodule)
         {
             /*向文本栏提示 添加链错误 该节点对应的module无定义*/
-            listWindow->addMessage("error", tr("EziDebug error: the module:%1 object is null pointer!").arg(ptreeItem->getModuleName()));
+            listWindow->addMessage("error", tr("EziDebug error: the module:%1 object is null !").arg(ptreeItem->getModuleName()));
+			
+			#if 0
             QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("软件内部错误!"));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed -- The software interior error!"));
+			#endif
 
             return ;
         }
@@ -1413,7 +1586,12 @@ void ToolWindow::addScanChain()
     {
         /*向文本栏提示 添加链错误 该节点对应的module无定义*/
         listWindow->addMessage("error", tr("EziDebug error: the module:").arg(ptreeItem->getModuleName()) + tr("has no definition!"));
+
+		#if 0
         QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("软件内部错误!"));
+		#else
+		QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed -- The software interior error!"));
+		#endif
 
         return ;
     }
@@ -1451,7 +1629,7 @@ void ToolWindow::addScanChain()
             ptreeItem->getAllRegNum(i.key() ,ichainName, nregBitCount , nbitWidth , pscanChain->getInstanceItemList());
             if((!nregBitCount) && (!nbitWidth))
             {
-                listWindow->addMessage("warning", tr("EziDebug warning: There is no reg with Clock:%1 in the chain:%2").arg(i.key()).arg(ichainName));
+                listWindow->addMessage("warning", tr("EziDebug warning: There is no register with clock:%1 in the chain:%2").arg(i.key()).arg(ichainName));
                 ++i;
                 continue ;
             }
@@ -1473,9 +1651,14 @@ void ToolWindow::addScanChain()
 
         if(!ichainListStructureMap.count())
         {
-            listWindow->addMessage("warning", tr("EziDebug warning: There is no reg in the chain!"));
+            listWindow->addMessage("warning", tr("EziDebug warning: There is no register in the chain!"));
             delete pscanChain ;
+			
+			#if 0
             QMessageBox::warning(this, QObject::tr("添加扫描链"),QObject::tr("添加扫描链失败!"));
+			#else
+			QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed!"));
+			#endif
 
             return  ;
         }
@@ -1491,7 +1674,12 @@ void ToolWindow::addScanChain()
             {
                 listWindow->addMessage("warning", tr("EziDebug warning: can't find the module %1 's clock ,insert scan chain failed !").arg(ptreeItem->getModuleName()));
                 delete pscanChain ;
+				
+				#if 0
                 QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("添加扫描链失败!"));
+				#else
+				QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed!"));
+				#endif
 
                 return ;
             }
@@ -1508,7 +1696,12 @@ void ToolWindow::addScanChain()
             {
                 delete pscanChain ;
                 listWindow->addMessage("warning", tr("EziDebug error: create EziDebug core error!"));
+				
+				#if 0
                 QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("软件内部错误!"));
+				#else
+				QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed -- The software interior error!"));
+				#endif
 
                 return ;
             }
@@ -1542,7 +1735,12 @@ void ToolWindow::addScanChain()
             if(currentPrj->eliminateLastOperation())
             {
                 listWindow->addMessage("error", tr("EziDebug error: delete last chain error!"));
+
+				#if 0
                 QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("软件内部错误!"));
+				#else
+	            QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed -- The software interior error!"));
+				#endif
 
                 return ;
             }
@@ -1624,7 +1822,7 @@ void ToolWindow::addScanChain()
             qDeleteAll(iaddedinfoList);
             qDeleteAll(ideletedinfoList);
 
-            listWindow->addMessage("info","EziDebug info: Create A New ScanChain!");
+            listWindow->addMessage("info","EziDebug info: Create a new scan chain!");
             QStandardItem * pitem = listWindow->addMessage("info",tr("The New ScanChain Parameter:"));
             listWindow->addMessage("process" , tr("      The chain name: %1").arg(pscanChain->getChainName()),pitem);
             listWindow->addMessage("process" , tr("      The chain topNode: %1").arg(ptreeItem->getNameData()),pitem);
@@ -1638,7 +1836,7 @@ void ToolWindow::addScanChain()
                 ++iregChainIter ;
             }
 
-            listWindow->addMessage("process" , tr("      The chain total reg number: %1").arg(iclockNumStr),pitem);
+            listWindow->addMessage("process" , tr("      The total register number of chain: %1").arg(iclockNumStr),pitem);
 
             listWindow->addMessage("process" , tr("      The traversed NodeList:"),pitem);
 
@@ -1678,8 +1876,13 @@ void ToolWindow::addScanChain()
             // 单纯修改 restore 文件无效  必须手工添加 工程文件
             nresult = currentPrj->chkEziDebugFileInvolved() ;
             if(nresult == 0)
-            {
-                QMessageBox::information(this , QObject::tr("注意") , QObject::tr("请将当前工程路径下EziDebug_v1.0目录下的文件加入到工程中!"));
+            {   
+                #if 0
+                QMessageBox::information(this , QObject::tr("EziDebug") , QObject::tr("请将当前工程路径下EziDebug_v1.0目录下的文件加入到工程中!"));
+				#else
+				QMessageBox::information(this , QObject::tr("EziDebug") , QObject::tr("Please add the source files under \"EziDebug_v1.0\" directory to your project"
+				                                                                      "Before you synthetize the project!"));
+				#endif
             }
             else if(nresult == -1)
             {
@@ -1694,14 +1897,18 @@ void ToolWindow::addScanChain()
             // 生成 signaltap 文件 或者 cdc 文件
             currentPrj->createCfgFile(ptreeItem);
 
-            listWindow->addMessage("info",tr("EziDebug info: Before you Synthesis the project ,Please "
+            listWindow->addMessage("info",tr("EziDebug info: Before you synthetize the project ,Please "
                                              "add the source files under \"EziDebug_v1.0\" directory to your project!"));
 
             //qDebug() << "add Scan Chain Success !";
 
             pthread->start();
 
+			#if 0
             QMessageBox::information(this, QObject::tr("添加扫描链"),QObject::tr("添加扫描链成功!"));
+			#else
+			QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain successfully!"));
+			#endif
 
         }
         else
@@ -1763,8 +1970,14 @@ void ToolWindow::addScanChain()
 
             if(nresult == 2)
             {
-                listWindow->addMessage("error" , tr("The top clock is not finded for the clock name is not correspond!"));
+                listWindow->addMessage("error" , tr("The top clock is not found for the clock name is not corresponding!"));
+				
+				#if 0
                 QMessageBox::warning(this, QObject::tr("添加扫描链"),QObject::tr("添加扫描链失败!"));
+				#else
+				QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed!"));
+				#endif
+				
                 return ;
             }
             goto ErrorHandle ;
@@ -1782,7 +1995,12 @@ void ToolWindow::addScanChain()
     return ;
 
 ErrorHandle:
+	
+	#if 0
     QMessageBox::critical(this, QObject::tr("添加扫描链"),QObject::tr("添加扫描链失败!"));
+	#else
+	QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Insert scan chain failed!"));
+	#endif
 
     return ;
 
@@ -1801,8 +2019,12 @@ int ToolWindow::deleteAllChain()
 
 
     if(!currentPrj)
-    {
+    {   
+#if 0
         QMessageBox::information(this, QObject::tr("删除所有扫描链"),QObject::tr("工程不存在!"));
+#else
+        QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The project is not existed , please set the project parameter first !"));
+#endif
         return 0 ;
     }
 
@@ -1810,7 +2032,11 @@ int ToolWindow::deleteAllChain()
     if(isNeededUpdate)
     {
         // 提示需要 请快速更新后再进行 操作
+        #if 0
         QMessageBox::information(this, QObject::tr("删除所有扫描链"),QObject::tr("检测到有文件被更新,检测到有文件被更新,请更新后再进行删除所有链操作!"));
+		#else
+	    QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before you delete all scan chains !"));
+		#endif
         return 0 ;
     }
     else
@@ -1819,8 +2045,12 @@ int ToolWindow::deleteAllChain()
         UpdateDetectThread *pthread = currentPrj->getThread();
         pthread->update() ;
         if(isNeededUpdate)
-        {
+        {   
+            #if 0
             QMessageBox::information(this, QObject::tr("删除所有扫描链"),QObject::tr("检测到有文件被更新,请更新后再进行删除所有链操作!"));
+			#else
+			QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Please update project before you delete all scan chains !"));
+			#endif
             return 0 ;
         }
     }
@@ -1830,8 +2060,12 @@ int ToolWindow::deleteAllChain()
     ichainTreeItemMap = currentPrj->getChainTreeItemMap() ;
 
     if(!ichainTreeItemMap.size())
-    {
+    {   
+        #if 0
         QMessageBox::information(this, QObject::tr("删除所有扫描链"),QObject::tr("不存在任何扫描链!"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Delete all scan chain failed -- There is no scan chain!"));
+		#endif
         return 0 ;
     }
     //QMap<QString,EziDebugScanChain*> ichainMap = currentPrj->getScanChainInfo();
@@ -1867,7 +2101,11 @@ int ToolWindow::deleteAllChain()
         if(!ptreeItem)
         {
             pthread->start();
+			#if 0
             QMessageBox::critical(this, QObject::tr("删除所有扫描链"),QObject::tr("软件内部错误!"));
+			#else 
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Delete all scan chain failed -- The software interior error!"));
+			#endif
             return 1;
         }
 
@@ -1875,7 +2113,11 @@ int ToolWindow::deleteAllChain()
         if(!pchain)
         {
             pthread->start();
+			#if 0
             QMessageBox::critical(this, QObject::tr("删除所有扫描链"),QObject::tr("软件内部错误!"));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Delete all scan chain failed -- The software interior error!"));
+			#endif
             return 1;
         }
 
@@ -1984,7 +2226,12 @@ int ToolWindow::deleteAllChain()
 
     // 开启检测更新线程
     pthread->start();
+
+	#if 0
     QMessageBox::information(this, QObject::tr("删除所有扫描链"),QObject::tr("删除所有扫描链成功!"));
+	#else
+	QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Delete scan chain successfully!"));
+	#endif
 
     return 0 ;
 
@@ -2034,7 +2281,11 @@ ErrorHandle:
 
     // 开启检测更新线程
     pthread->start();
+	#if 0
     QMessageBox::warning(this, QObject::tr("删除所有扫描链"),QObject::tr("删除所有扫描链失败!"));
+	#else
+	QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Delete all scan chain failed!"));
+	#endif
 
     return 1 ;
 }
@@ -2065,14 +2316,22 @@ void ToolWindow::testbenchGeneration()
 
 
     if(!currentPrj)
-    {
+    {   
+#if 0
         QMessageBox::warning(this, QObject::tr("生成testBench"),QObject::tr("工程不存在，请进行设置工程参数并进行扫描!"));
+#else
+        QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The project is not existed , please set the project parameter !"));
+#endif
         return ;
     }
 
     if(!currentPrj->getScanChainInfo().count())
-    {
+    {   
+#if 0
         QMessageBox::warning(this, QObject::tr("生成testBench"),QObject::tr("不存在任何扫描链!"));
+#else
+        QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("There is no scan chain in project!"));
+#endif
         return ;
     }
 
@@ -2095,24 +2354,35 @@ void ToolWindow::testbenchGeneration()
                 if(currentPrj->getToolType() == EziDebugPrj::ToolIse)
                 {
                     if(!ifileName.endsWith(".prn"))
-                    {
+                    {   
+                        #if 0
                         QMessageBox::warning(this, QObject::tr("生成testBench"),QObject::tr("数据文件格式不正确!"));
-
+						#else
+						QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The data file type is not correct!"));
+						#endif
                         return ;
                     }
                 }
                 else if(currentPrj->getToolType() == EziDebugPrj::ToolQuartus)
                 {
                     if(!ifileName.endsWith(".txt"))
-                    {
+                    {   
+                        #if 0
                         QMessageBox::warning(this, QObject::tr("生成testBench"),QObject::tr("数据文件格式不正确!"));
+						#else
+						QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The data file type is not correct!"));
+						#endif
 
                         return ;
                     }
                 }
                 else
-                {
+                {   
+                    #if 0
                     QMessageBox::warning(this, QObject::tr("生成testBench"),QObject::tr("工具软件类型不正确!"));
+					#else
+					QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The tool type is not correct!"));
+					#endif
                     return ;
                 }
                 idataFileNameList.append(ifileName);
@@ -2125,20 +2395,29 @@ void ToolWindow::testbenchGeneration()
 
         EziDebugScanChain *pchain = currentPrj->getScanChainInfo().value(idataDialg->getChainName(),NULL);
         if(!pchain)
-        {
+        {   
+            #if 0
             QMessageBox::critical(this, QObject::tr("生成testBench"),QObject::tr("%1 不存在!").arg(idataDialg->getChainName()));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("The scan chain \"%1\" is not existed!").arg(idataDialg->getChainName()));
+			#endif
+			
             return ;
         }
 
         EziDebugInstanceTreeItem * pitem = currentPrj->getChainTreeItemMap().value(ichainName ,NULL);
         if(!pitem)
-        {
+        {   
+            #if 0
             QMessageBox::critical(this, QObject::tr("生成testBench"),QObject::tr("%1 对应的节点不存在!").arg(idataDialg->getChainName()));
+			#else
+			QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("The node \"%1\" is not existed!").arg(idataDialg->getChainName()));
+			#endif
             return ;
         }
 
-        listWindow->addMessage("info","EziDebug info: Generate TestBench !");
-        QStandardItem * pmessageitem = listWindow->addMessage("info","EziDebug info: The input and output parameter as follows:");
+        listWindow->addMessage("info","EziDebug info: Generating TestBench !");
+        QStandardItem * pmessageitem = listWindow->addMessage("info","EziDebug info: The input and output parameters are as follows:");
         listWindow->addMessage("process",tr("%1ChainName: %2").arg(tr(" ").repeated(6)).arg(ichainName),pmessageitem);
 
         for(int j = 0 ; j < idataFileNameList.count() ; j++)
@@ -2419,7 +2698,7 @@ void ToolWindow::testbenchGeneration()
 
         qDebug() << "Generate testBench finish !" << __LINE__ ;
 
-        listWindow->addMessage("info","EziDebug info: Finish generate testBench file!");
+        listWindow->addMessage("info","EziDebug info: Finishing generating testBench file!");
 
 
 
@@ -2480,7 +2759,11 @@ void ToolWindow::testbenchGeneration()
             }
         }
 
+		#if 0
         QMessageBox::information(this, QObject::tr("生成testBench"),QObject::tr("testBench生成完毕!"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The testbench is generated successfully!"));
+		#endif
 
     }
     else
@@ -2578,37 +2861,41 @@ void ToolWindow::createButtons()
 
 
     //工具栏按钮
-    proSettingButton = createToolButton(tr("工程设置"),
+    //tr("工程设置")
+    proSettingButton = createToolButton(tr("Project parameter settings  "),
                                         tr(":/images/projectSetting.bmp"),
                                         QSize(42, 41),
                                         this,
                                         SLOT(proSetting()));
-
-    proUpdateButton = createToolButton(tr("更新"),
+    // tr("更新")
+    proUpdateButton = createToolButton(tr("Update"),
                                        tr(":/images/projectUpdate.bmp"),
                                        QSize(42, 41),
                                        this,
                                        SLOT(proUpdate()));
 
-    proPartlyUpdateButton = createToolButton(tr("部分更新"),
+	// tr("部分更新")
+    proPartlyUpdateButton = createToolButton(tr("Update fast"),
                                        tr(":/images/projectPartlyUpdate.bmp"),
                                        QSize(42, 41),
                                        this,
                                        SLOT(fastUpdate()));
 
-    deleteChainButton = createToolButton(tr("删除"),
+	// tr("删除")
+    deleteChainButton = createToolButton(tr("Delete all scan chain"),
                                          tr(":/images/deleteChain.bmp"),
                                          QSize(42, 41),
                                          this,
                                          SLOT(deleteAllChain()));
 
-    testbenchGenerationButton = createToolButton(tr("Testbench生成"),
+	// tr("Testbench生成")
+    testbenchGenerationButton = createToolButton(tr("Testbench Generation "),
                                                  tr(":/images/testbenchGeneration.bmp"),
                                                  QSize(42, 41),
                                                  this,
                                                  SLOT(testbenchGeneration()));
-
-    proUndoButton = createToolButton(tr("撤消"),
+    // tr("撤消")
+    proUndoButton = createToolButton(tr("Undo"),
                                                  tr(":/images/undo.bmp"),
                                                  QSize(42, 41),
                                                  this,
@@ -2616,25 +2903,28 @@ void ToolWindow::createButtons()
 
 
     //右上角标题栏按钮
-    minimizeButton = createToolButton(tr("最小化"),
+    // tr("最小化")
+    minimizeButton = createToolButton(tr("Minimize"),
                                       tr(":/images/ToolWindowminimize.bmp"),
                                       QSize(27, 19),
                                       this,
                                       SLOT(minimize()));
 
-    miniModeButton = createToolButton(tr("迷你模式"),
+	// tr("迷你模式")
+    miniModeButton = createToolButton(tr("Mini mode"),
                                       tr(":/images/ToolWindowNormal.bmp"),
                                       QSize(27, 19),
                                       this,
                                       SLOT(toMiniMode()));
-
-    showListWindowButton = createToolButton(tr("完整模式"),
+     // tr("完整模式")
+    showListWindowButton = createToolButton(tr("Normal mode"),
                                             tr(":/images/showListWindow.bmp"),
                                             QSize(27, 19),
                                             this,
                                             SLOT(showListWindow()));
 
-    exitButton = createToolButton(tr("退出"),
+	// tr("退出")
+    exitButton = createToolButton(tr("Quit"),
                                   tr(":/images/ToolWindowExit.bmp"),
                                   QSize(33, 19),
                                   this,
@@ -2644,39 +2934,69 @@ void ToolWindow::createButtons()
 }
 
 void ToolWindow::createActions()
-{
+{   
+    #if 0
     exitAct = new QAction(tr("退  出"), this);
+	#else
+	exitAct = new QAction(tr("Quit"), this);
+	#endif
+	
     exitAct->setShortcuts(QKeySequence::Quit);
     //exitAct->setStatusTip(tr("退出"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
+	#if 0
     minimizeAct = new QAction(tr("最小化"), this);
+	#else
+	minimizeAct = new QAction(tr("Minimize"), this);
+	#endif
     //minimizeAct->setShortcuts(QKeySequence::);
     //minimizeAct->setStatusTip(tr("Exit the application"));
     connect(minimizeAct, SIGNAL(triggered()), this, SLOT(minimize()));
 
+	#if 0
     toMiniModeAct = new QAction(tr("迷你模式"), this);
+	#else
+	toMiniModeAct = new QAction(tr("Mini mode"), this);
+	#endif
     //normalAct->setShortcuts(QKeySequence::Quit);
     //normalAct->setStatusTip(tr("Exit the application"));
     connect(toMiniModeAct, SIGNAL(triggered()), this, SLOT(toMiniMode()));
 
+	#if 0
     aboutAct = new QAction(tr("关 于..."),this);
+	#else
+	aboutAct = new QAction(tr("About..."),this);
+	#endif
     connect(aboutAct,SIGNAL(triggered()),this,SLOT(about()));
 
+	#if 0
     helpAct = new QAction(tr("帮  助"),this);
+	#else
+	helpAct = new QAction(tr("Help"),this);
+	#endif
     connect(helpAct,SIGNAL(triggered()),this,SLOT(help()));
 
 }
 
 //创建系统托盘的右键菜单
 void ToolWindow::CreatTrayMenu()
-{
+{   
+    #if 0
     miniSizeAction = new QAction(tr("最小化"),this);
     maxSizeAction = new QAction(tr("最大化"),this);
     restoreWinAction = new QAction(tr("还  原"),this);
     quitAction = new QAction(tr("退  出"),this);
     aboutAction = new QAction(tr("关 于..."),this);
     helpAction = new QAction(tr("帮  助"),this);
+	#else
+	miniSizeAction = new QAction(tr("Minimize"),this);
+    maxSizeAction = new QAction(tr("Maximize"),this);
+    restoreWinAction = new QAction(tr("Resume to normal mode"),this);
+    quitAction = new QAction(tr("Quit"),this);
+    aboutAction = new QAction(tr("About..."),this);
+    helpAction = new QAction(tr("Help"),this);
+	#endif
 
     this->connect(miniSizeAction,SIGNAL(triggered()),this,SLOT(minimize()));
     this->connect(maxSizeAction,SIGNAL(triggered()),this,SLOT(showMaximized()));
@@ -2838,7 +3158,7 @@ void ToolWindow::readSetting()
     int  nparameterFlag  = PARAMETER_OK ;
     UpdateDetectThread * pthread = NULL ;
     EziDebugPrj::TOOL etool = EziDebugPrj::ToolOther ;
-    QSettings isettings("Eda Center.", "EziDebug");
+    QSettings isettings("EDA Center.", "EziDebug");
     // 获取工程参数，如果有就创建工程对象；没有的话，不创建
     isettings.beginGroup("project");
     unsigned int unMaxRegNum = isettings.value("MaxRegNum").toInt();
@@ -2893,7 +3213,11 @@ void ToolWindow::readSetting()
         else
         {
             //上一次保存的参数 不完整或者不正确
+            #if 0
             QMessageBox::information(this, QObject::tr("读取软件使用信息"),QObject::tr("参数错误!"));
+			#else
+			QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("There were parameter errors when reading software using information !"));
+			#endif
             goto Parameter_incomplete ;
         }
     }
@@ -2941,7 +3265,7 @@ void ToolWindow::writeSetting()
 #endif
 
     qDebug() << "Attention: Begin to writtingSetting!" ;
-    QSettings isettings("Eda Center.", "EziDebug");
+    QSettings isettings("EDA Center.", "EziDebug");
     // 获取工程参数，如果有就创建工程对象；没有的话，不创建
     isettings.beginGroup("project");
     isettings.setValue("MaxRegNum",unMaxRegNum);
@@ -2959,7 +3283,7 @@ void ToolWindow::closeEvent(QCloseEvent *event)
     myTrayIcon->hide(); //test
     if (myTrayIcon->isVisible())
     {
-        myTrayIcon->showMessage("EziDebug", "Hi,This is my EziDebug.",QSystemTrayIcon::Information,5000);
+        myTrayIcon->showMessage("EziDebug", "EziDebug.",QSystemTrayIcon::Information,5000);
 
         hide();     //最小化
         event->ignore();
@@ -3039,15 +3363,23 @@ void ToolWindow::fastUpdate()
     QList<EziDebugPrj::LOG_FILE_INFO*> ideletedinfoList ;
 
     if(!currentPrj)
-    {
+    {   
+#if 0
         QMessageBox::warning(this, QObject::tr("快速更新"),QObject::tr("您所指定的工程不存在!"));
+#else
+        QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The project is not existed!"));
+#endif
         return ;
     }
 
 
     if(!isNeededUpdate)
-    {
+    {   
+        #if 0
         QMessageBox::information(this, QObject::tr("快速更新"),QObject::tr("无文件可更新!"));
+		#else
+		QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("There is no updated file in project!"));
+		#endif
         return ;
     }
 
@@ -3072,8 +3404,12 @@ void ToolWindow::fastUpdate()
     progressBar->setValue(10);
 
     if(currentPrj->updatePrjAllFile(iaddFileList,idelFileList,ichgFileList,iaddedinfoList,ideletedinfoList,true))
-    {
+    {   
+        #if 0
         QMessageBox::warning(this, QObject::tr("快速更新失败"),QObject::tr("软件内部错误!"));
+		#else
+	    QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Fast update failed -- The software interior error!"));
+		#endif
 
         /*重启更新线程*/
         pthread->start();
@@ -3090,8 +3426,12 @@ void ToolWindow::fastUpdate()
     QString itopModuleComboName = itopModule + QObject::tr(":")+ itopModule ;
     EziDebugInstanceTreeItem* pnewHeadItem = new EziDebugInstanceTreeItem(itopModule,itopModule);
     if(!pnewHeadItem)
-    {
+    {   
+        #if 0
         QMessageBox::critical(this, QObject::tr("快速更新失败"),QObject::tr("软件内部错误!"));
+		#else
+		QMessageBox::critical(this, QObject::tr("EziDebug"),QObject::tr("Fast update failed -- The software interior error!"));
+		#endif
         return ;
     }
 
@@ -3104,7 +3444,11 @@ void ToolWindow::fastUpdate()
         qDeleteAll(iaddedinfoList);
         qDeleteAll(ideletedinfoList);
         pthread->start();
+		#if 0
         QMessageBox::warning(this, QObject::tr("快速更新失败"),QObject::tr("软件内部错误!"));
+		#else
+		QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("Fast update failed -- The software interior error!"));
+		#endif
         return ;
     }
 
@@ -3135,13 +3479,18 @@ void ToolWindow::fastUpdate()
         }
 
         // 扫描链被破坏 ,提示删除
+        #if 0
         QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链被破坏"), tr("是否删除相关扫描链代码"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) ;
+		#else
+		QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("some scan chains has been destroyed, \n Do you want to delete all scan chain code?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) ;
+		#endif
+		
         if(rb == QMessageBox::Yes)
         {
             QStringList iunDelChainList = currentPrj->deleteDestroyedChain(iaddedinfoList,ideletedinfoList) ;
             if(iunDelChainList.count())
             {
-                listWindow->addMessage("error","EziDebug error: Some chains do not be deleted for some reasons!");
+                listWindow->addMessage("error","EziDebug error: Some chains can not be deleted for some reasons!");
                 for(int i = 0 ; i < iunDelChainList.count() ;i++)
                 {
                     listWindow->addMessage("error",tr("EziDebug chain:%1").arg(iunDelChainList.at(i)));
@@ -3250,7 +3599,11 @@ void ToolWindow::fastUpdate()
 
     progressBar->setValue(100);
 
+	#if 0
     QMessageBox::warning(this, QObject::tr("快速更新"),QObject::tr("快速更新完毕!"));
+	#else
+	QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Fast update completed!"));
+	#endif
 
     progressBar->setValue(0);
 
@@ -3271,8 +3624,12 @@ void ToolWindow::undoOperation()
     int i = 0 ;
 
     if(!currentPrj)
-    {
+    {   
+#if 0
         QMessageBox::warning(this, QObject::tr("撤销上一步操作"),QObject::tr("您所指定的工程不存在!"));
+#else
+        QMessageBox::warning(this, QObject::tr("EziDebug"),QObject::tr("The project is not existed!"));
+#endif
         return ;
     }
 
@@ -3293,7 +3650,11 @@ void ToolWindow::undoOperation()
         if(!plastOperatedChain)
         {
             /*提示 无扫描链*/
-            QMessageBox::information(this, QObject::tr("undo"),QObject::tr("上一步操作的扫描链不存在!"));
+			#if 0
+            QMessageBox::information(this, QObject::tr("undo 失败"),QObject::tr("上一步操作的扫描链不存在!"));
+			#else
+			QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("There is no scan chain in last operation!"));
+			#endif
             pthread->start();
             return ;
         }
@@ -3320,8 +3681,12 @@ void ToolWindow::undoOperation()
             QFile ibackupFile(ibackupFileName) ;
 
             if(!ibackupFile.exists())
-            {
+            {   
+                #if 0
                 QMessageBox::information(this, QObject::tr("undo"),QObject::tr("备份文件%1不存在!").arg(ibackupFileName));
+				#else
+				QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Undo failed ,there is no backup file \"%1\"").arg(ibackupFileName));
+				#endif
                 pthread->start();
                 return ;
             }
@@ -3345,8 +3710,12 @@ void ToolWindow::undoOperation()
             QFile ibackupFile(ibackupFileName) ;
 
             if(!ibackupFile.exists())
-            {
+            {   
+                #if 0
                 QMessageBox::information(this, QObject::tr("undo失败"),QObject::tr("备份文件%1不存在!").arg(ibackupFileName));
+				#else
+				QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Undo failed ,there is no backup file \"%1\"!").arg(ibackupFileName));
+				#endif
                 pthread->start();
                 return ;
             }
@@ -3455,8 +3824,12 @@ void ToolWindow::undoOperation()
                     + ieziDebugFileSuffix;
             QFile ibackupFile(ibackupFileName) ;
             if(!ibackupFile.exists())
-            {
+            {   
+                #if 0
                 QMessageBox::information(this, QObject::tr("undo失败"),QObject::tr("备份文件%1不存在!").arg(ibackupFileName));
+				#else
+				QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Undo failed , there is no backup file \"%1\"!").arg(ibackupFileName));
+				#endif
                 pthread->start();
                 return ;
             }
@@ -3565,8 +3938,12 @@ void ToolWindow::undoOperation()
                         + ieziDebugFileSuffix;
                 QFile ibackupFile(ibackupFileName) ;
                 if(!ibackupFile.exists())
-                {
+                {   
+                    #if 0
                     QMessageBox::information(this, QObject::tr("undo失败"),QObject::tr("备份文件%1不存在!").arg(ibackupFileName));
+					#else
+					QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("Undo failed , there is no backup file \"%1\" !").arg(ibackupFileName));
+					#endif
                     pthread->start();
                     return ;
                 }
@@ -3658,8 +4035,12 @@ void ToolWindow::undoOperation()
         currentPrj->updateOperation(EziDebugPrj::OperateTypeNone,NULL,NULL);
     }
     else
-    {
+    {   
+        #if 0
         QMessageBox::information(this , QObject::tr("注意") , QObject::tr("上一步无操作!"));
+		#else
+		QMessageBox::information(this , QObject::tr("EziDebug") , QObject::tr("Note: there is no last operation!"));
+		#endif
 
         if(isstopFlag == true)
         {
@@ -3672,7 +4053,7 @@ void ToolWindow::undoOperation()
     if(currentPrj->changedLogFile(iaddedinfoList,ideletedinfoList))
     {
         // 提示 保存 log 文件出错
-        qDebug() << tr("Error:Save log file Error in undo operation!") ;
+        qDebug() << tr("Error:Save log file error in undo operation!") ;
     }
 
     qDeleteAll(ideletedinfoList);
@@ -3684,7 +4065,11 @@ void ToolWindow::undoOperation()
     }
 
     // 100%
+    #if 0
     QMessageBox::information(this, QObject::tr("undo操作"),QObject::tr("撤销上一步操作完毕!"));
+	#else
+	QMessageBox::information(this, QObject::tr("EziDebug"),QObject::tr("The last operation is undo successfully!"));
+	#endif
 
     return ;
 }
@@ -3741,8 +4126,12 @@ void ToolWindow::showListWindow()
 
 //关于
 void ToolWindow::about()
-{
+{   
+#if 0
     QMessageBox::about(this, tr("关于"), tr("    版权由中科院EDA中心所有    \n\n"));
+#else
+    QMessageBox::about(this,tr("About EziDebug"),tr("    EziDebug CopyRight(c) 2013-2018 by EziGroup.    \n\n"));
+#endif
 
 }
 
@@ -3806,7 +4195,7 @@ void ToolWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
         }
         break;
     case QSystemTrayIcon::MiddleClick:
-        myTrayIcon->showMessage("EziDebug", "Hi,This is my EziDebug.",QSystemTrayIcon::Information,10000);
+        myTrayIcon->showMessage("EziDebug", "EziDebug.",QSystemTrayIcon::Information,10000);
         break;
 
     default:

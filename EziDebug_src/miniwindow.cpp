@@ -148,43 +148,48 @@ MiniWindow::MiniWindow(QWidget *parent) :
 
 void MiniWindow::createButtons()
 {
-    //工具栏按钮
-    proSettingButton = createToolButton(tr("工程设置"),
+    //工具栏按钮  tr("工程设置")
+    proSettingButton = createToolButton(tr("Set Project Parameter"),
                                         tr(":/images/projectSetting.bmp"),
                                         QSize(26, 25));//(42, 41)
 
-    proUpdateButton = createToolButton(tr("更新"),
+	// tr("更新")
+    proUpdateButton = createToolButton(tr("Update"),
                                        tr(":/images/projectUpdate.bmp"),
                                        QSize(26, 25));
-
-    proPartlyUpdateButton = createToolButton(tr("部分更新"),
+    // tr("部分更新")
+    proPartlyUpdateButton = createToolButton(tr("Update fast"),
                                        tr(":/images/projectPartlyUpdate.bmp"),
                                        QSize(26, 25));
 
-    deleteChainButton = createToolButton(tr("删除"),
+	// tr("删除")
+    deleteChainButton = createToolButton(tr("Delete all scan chain"),
                                          tr(":/images/deleteChain.bmp"),
                                          QSize(26, 25));
 
-    testbenchGenerationButton = createToolButton(tr("testbench生成"),
+	// tr("testbench生成")
+    testbenchGenerationButton = createToolButton(tr("Gnerate testbench"),
                                                  tr(":/images/testbenchGeneration.bmp"),
                                                  QSize(26, 25));
-
-    proUndoButton = createToolButton(tr("撤消"),
+    // tr("撤消")
+    proUndoButton = createToolButton(tr("Undo"),
                                                      tr(":/images/undo.bmp"),
                                                      QSize(26, 25));
 
 
 
     //右上角标题栏按钮
-    minimizeButton = createToolButton(tr("最小化"),
+    // tr("最小化")
+    minimizeButton = createToolButton(tr("Minimize"),
                                           tr(":/images/ToolWindowminimize.bmp"),
                                           QSize(20, 14));//QSize(27, 19)
 
-    normalModeButton = createToolButton(tr("普通模式"),
+	// tr("普通模式")
+    normalModeButton = createToolButton(tr("Normal mode"),
                                         tr(":/images/ToolWindowNormal.bmp"),
                                         QSize(20, 14));
-
-    exitButton = createToolButton(tr("退出"),
+    // tr("退出")
+    exitButton = createToolButton(tr("Quit"),
                                       tr(":/images/ToolWindowExit.bmp"),
                                       QSize(24, 14));//QSize(33, 19)
 
@@ -217,18 +222,21 @@ void MiniWindow::createButtons()
 }
 
 void MiniWindow::createActions()
-{
-    exitAct = new QAction(tr("退出"), this);
+{   
+    // tr("退出")
+    exitAct = new QAction(tr("Quit"), this);
     exitAct->setShortcuts(QKeySequence::Quit);
     //exitAct->setStatusTip(tr("退出"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-    minimizeAct = new QAction(tr("最小化"), this);
+	// tr("最小化")
+    minimizeAct = new QAction(tr("Minimize"), this);
     //minimizeAct->setShortcuts(QKeySequence::);
     //minimizeAct->setStatusTip(tr("Exit the application"));
     connect(minimizeAct, SIGNAL(triggered()), this, SLOT(minimize()));
 
-    toNormalModeAct = new QAction(tr("普通模式"), this);
+	// tr("普通模式")
+    toNormalModeAct = new QAction(tr("Normal mode"), this);
     //normalAct->setShortcuts(QKeySequence::Quit);
     //normalAct->setStatusTip(tr("Exit the application"));
     connect(toNormalModeAct, SIGNAL(triggered()), this, SIGNAL(toNormalMode()));

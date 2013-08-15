@@ -71,8 +71,15 @@ ListWindow::ListWindow(QWidget *parent, Qt::WindowFlags f) :
 
     moduleTreeView->setWindowTitle(QObject::tr("Simple Tree Model"));
     m_pcontextMenu = new QMenu(moduleTreeView);
+
+	#if 0
     m_paddChainAct = m_pcontextMenu->addAction(QIcon(":/images/insert.png"),tr("添加链"));
     m_pdeleteChainAct = m_pcontextMenu->addAction(QIcon(":/images/delete.png"),tr("删除链"));
+	#else
+	m_paddChainAct = m_pcontextMenu->addAction(QIcon(":/images/insert.png"),tr("insert scanchain"));
+    m_pdeleteChainAct = m_pcontextMenu->addAction(QIcon(":/images/delete.png"),tr("delete scanchain"));
+	#endif
+	
     connect(m_paddChainAct,SIGNAL(triggered()), toolWindow, SLOT(addScanChain()));
     connect(m_pdeleteChainAct,SIGNAL(triggered()),toolWindow, SLOT(deleteScanChain()));
 
@@ -91,7 +98,7 @@ ListWindow::ListWindow(QWidget *parent, Qt::WindowFlags f) :
             this, SLOT(show_contextmenu(const QPoint&)));
     moduleTreeView->show();
 
-    addMessage("welcome","####Welcome to use EziDebug####");
+    addMessage("welcome","####Welcome to EziDebug####");
 
     /* 根据工程 文件是否创建 来是否显示 树状结构图*/
     // 在 toolwindow 的 构造 时 检测是否存在 默认路径 ，如果存在有效的默认路径，则会根据该路径1个工程对象
@@ -1635,7 +1642,12 @@ void ListWindow::welcomeinfoinit(EziDebugPrj *prj)
             //if(prj->getScanChainInfo().count())
             //{
                 // 配置文件被破坏  是否删除工程代码中所有的扫描链代码？
+                #if 0
                 QMessageBox::StandardButton rb = QMessageBox::question(this, tr("配置文件被破坏"), tr("是否删除工程代码中所有扫描链代码?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				#else
+				QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("The configuration file has been destroyed,\n Do you want to delete all scan chain code ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+				#endif
 
                 if(rb == QMessageBox::Yes)
                 {
@@ -1691,7 +1703,11 @@ void ListWindow::welcomeinfoinit(EziDebugPrj *prj)
             {
                 // 提示删除所有链
                 // 部分扫描链信息丢失  是否删除所有扫描链代码
+                #if 0
                 QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链信息丢失"), tr("是否删除所有扫描链代码?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				#else
+			    QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("Some scan chain information has lost, \n Do you want to delete all scan chain code ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				#endif
                 if(rb == QMessageBox::Yes)
                 {
                     // 删除所有链代码
@@ -1802,18 +1818,22 @@ void ListWindow::welcomeinfoinit(EziDebugPrj *prj)
                 }
 
                 // 是否删除相关扫描链代码,否则相应扫描链不可用！
+                #if 0
                 QMessageBox::StandardButton rb = QMessageBox::question(this, tr("部分扫描链被破坏"), tr("相关扫描链不可用,是否删除相关扫描链代码?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				#else
+				QMessageBox::StandardButton rb = QMessageBox::question(this, tr("EziDebug"), tr("Some scan chains has been destroyed ,\n Do you want to delete all scan chain code ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+				#endif
                 if(rb == QMessageBox::Yes)
                 {
                     iunDelChainList = prj->deleteDestroyedChain(iaddedinfoList,ideletedinfoList) ;
                     if(iunDelChainList.count())
                     {
-                        addMessage("error","EziDebug error: Some chains do not be deleted for some reasons!");
+                        addMessage("error","EziDebug error: Some chains can not be deleted for some reasons!");
                         for(int i = 0 ; i < iunDelChainList.count() ;i++)
                         {
                             addMessage("error",tr("EziDebug chain:%1").arg(iunDelChainList.at(i)));
                         }
-                        addMessage("error","EziDebug error: Please check the code file is compiled successed!");
+                        addMessage("error","EziDebug error: Please check the code file is compiled successfully or not!");
                     }
 
                     for(int i = 0 ; i < idestroyedChainList.count() ; i++)
@@ -1883,8 +1903,8 @@ void ListWindow::welcomeinfoinit(EziDebugPrj *prj)
             qDeleteAll(iaddedinfoList);
             qDeleteAll(ideletedinfoList);
 
-            QStandardItem * pitem = addMessage("info",tr("EziDebug info: The default project parameter:"));
-            addMessage("process",tr("      Scanchain Max Reg Number: %1").arg(prj->getMaxRegNumPerChain()),pitem);
+            QStandardItem * pitem = addMessage("info",tr("EziDebug info: The default project parameters:"));
+            addMessage("process",tr("      Scanchain Max Register Number: %1").arg(prj->getMaxRegNumPerChain()),pitem);
             addMessage("process",tr("      Project Path: %1").arg(prj->getCurrentDir().absolutePath()),pitem);
             addMessage("process",tr("      Compile Software: \"%1\"").arg((prj->getToolType() == EziDebugPrj::ToolQuartus) ? ("quartus") :("ise")),pitem);
 

@@ -753,12 +753,16 @@ bool EziDebugPrj::isPrjFileExist(void)
     ifileList = m_iprjPath.entryList(inameFilter,QDir::Files) ;
     if(!ifileList.count())
     {
-        qDebug() << "Please Check the path \""<< m_iprjPath.absolutePath() <<"\" to verify the " << inameFilter.at(0) << "file exist !";
+        //qDebug() << "Please Check the path \""<< m_iprjPath.absolutePath() <<"\" to verify the " << inameFilter.at(0) << "file exist !";
+        QMessageBox::warning(NULL, QObject::tr("EziDebug"),QObject::tr("Please Check the path \n \"%1\" \n to verify the %2 file exist!").arg(m_iprjPath.absolutePath()) \
+                             .arg(inameFilter.at(0))) ;
+        //  .arg(inameFilter.at(0))));
         return 0 ;
     }
     else if(ifileList.count() > 1)
     {
         qDebug() << "Please Delete the unnecessary file " << inameFilter.at(0) ;
+		QMessageBox::warning(NULL, QObject::tr("EziDebug"),QObject::tr("Please delete the unnecessary \"%1\"file!").arg(inameFilter.at(0)));
         return 0 ;
     }
     else
@@ -4146,8 +4150,13 @@ int EziDebugPrj::updatePrjAllFile(const QStringList& addfilelist,const QStringLi
         preupdateProgressBar(updateFlag,(20+(i/ifileList.count())*15));
 
         if(addFile(ifileList.at(i),partScanType,addinfolist))
-        {
+        {   
+            #if 0
             QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("扫描文件错误"), tr("是否继续扫描?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#else
+            QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("EziDebug"), tr("Scan file Error , do you want to continue to scan file ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+			#endif
+			
             if(rb == QMessageBox::Yes)
             {
                ++i;
@@ -4191,7 +4200,12 @@ int EziDebugPrj::updatePrjAllFile(const QStringList& addfilelist,const QStringLi
             else
             {
                 // 如果出错 ,提示是否继续扫描
+                #if 0
                 QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("扫描文件错误"), tr("是否继续扫描?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+                #else
+                QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("EziDebug"), tr("Scan file Error , do you want to continue to scan file ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+                #endif
+
                 if(rb == QMessageBox::Yes)
                 {
                    ++i;
@@ -4391,6 +4405,7 @@ void EziDebugPrj::setXilinxErrCheckedFlag(bool flag)
 {
     m_isDisXilinxErrChecked = flag ;
 }
+
 void EziDebugPrj::setLogFileName(const QString& filename)
 {
     m_ilogFileName = filename ;
@@ -4560,7 +4575,12 @@ int EziDebugPrj::traverseAllCodeFile(EziDebugPrj::SCAN_TYPE type , const QMap<QS
                  {
                      qDebug() << "traverseAllCodeFile:scan file failed! FILE NAME" << i.key();
                      //dynamic_cast<QWidget*>(this->parent())
+                     #if 0
                      QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("扫描文件错误"), tr("是否继续扫描?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+                     #else
+                     QMessageBox::StandardButton rb = QMessageBox::question(NULL, tr("EziDebug"), tr("Scan file Error , do you want to continue to scan file ?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+                     #endif
+
                      if(rb == QMessageBox::Yes)
                      {
                         ++i;
@@ -4660,12 +4680,14 @@ int EziDebugPrj::generateTreeView(void)
         qDebug() << "EziDebug Error: There is no Topmodule definition!";
         return 1;
     }
+
     /*根据topmodule 构造树状显示结构的数据信息*/
     //  if (!m_imoduleMap.contains(m_itopModule))
     //  {
     //        qDebug() << " there is not topModule!";
     //        return 1 ;
     //  }
+
     EziDebugInstanceTreeItem* item = new EziDebugInstanceTreeItem(m_itopModule,m_itopModule);
     if(!item)
     {

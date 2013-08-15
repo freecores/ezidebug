@@ -16,7 +16,11 @@ ProjectSetWizard::ProjectSetWizard(QWidget *parent):QWizard(parent)
     addPage(m_iregSetPage);
     addPage(m_itoolSetPage);
 
+    #if 0
     setWindowTitle(tr("工程设置向导"));
+    #else
+    setWindowTitle(tr("Project Settings Wizard"));
+    #endif
 
     connect(this,SIGNAL(currentIdChanged(int)),this,SLOT(saveModifiedPage(int)));
 }
@@ -58,8 +62,8 @@ void ProjectSetWizard::done (int result)
     {
         m_isXilinxErrChecked = false ;
     }
-    QWizard::done(result);
 
+    QWizard::done(result);
 }
 
 
@@ -133,13 +137,22 @@ void ProjectSetWizard::browse()
 
     QFileDialog::Options options = QFileDialog::DontResolveSymlinks | QFileDialog::ShowDirsOnly;
     //options |= QFileDialog::DontUseNativeDialog;
+    
+#if 0
     QString directory = QFileDialog::getExistingDirectory(this,
-                                tr("设置工程目录"),
-                                proPathComboBox->currentText(),
-                                options);
+                                                          tr("设置工程目录"),
+                                                          proPathComboBox->currentText(),
+                                                          options);
+#else
+    QString directory = QFileDialog::getExistingDirectory(this,
+                                                          tr("Setting project directory"),
+                                                          proPathComboBox->currentText(),
+                                                          options);
+#endif
+
     if (!directory.isEmpty()){
         if (proPathComboBox->findText(directory) == -1)
-                proPathComboBox->addItem(directory);
+            proPathComboBox->addItem(directory);
         proPathComboBox->setCurrentIndex(proPathComboBox->findText(directory));
     }
 }
@@ -147,9 +160,23 @@ void ProjectSetWizard::browse()
 void ProjectSetWizard::createPage1()
 {
     m_iprjSetPage = new QWizardPage(this);
+    m_iprjSetPage->setButtonText(QWizard::NextButton,tr("Next"));
+    m_iprjSetPage->setButtonText(QWizard::BackButton,tr("Back"));
+    m_iprjSetPage->setButtonText(QWizard::CancelButton,tr("Cancel"));
+    m_iprjSetPage->setButtonText(QWizard::HelpButton,tr("Help"));
+    m_iprjSetPage->setButtonText(QWizard::FinishButton,tr("Finish"));
+#if 0
     m_iprjSetPage->setTitle(tr("设置工程目录"));
+#else
+    //m_iprjSetPage->setTitle(tr("Setting Project Directory"));
+#endif
 
+#if 0
     QLabel *label = new QLabel(tr("工程目录:"));
+#else
+    QLabel *label = new QLabel(tr("The project directory:"));
+#endif
+
     proPathComboBox = createComboBox(QDir::currentPath());
     label->setBuddy(proPathComboBox);
     proPathComboBox->clear();
@@ -162,8 +189,11 @@ void ProjectSetWizard::createPage1()
         qDebug() << m_icurrentDir << __LINE__;
     }
 
-
+#if 0
     browseButton = createButton(tr("浏览"), SLOT(browse()));
+#else
+    browseButton = createButton(tr("Browse"), SLOT(browse()));
+#endif
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(label, 0, 0);
@@ -171,13 +201,23 @@ void ProjectSetWizard::createPage1()
     layout->addWidget(browseButton, 3, 4, 1, 1);
     m_iprjSetPage->setLayout(layout);
 
+
     return ;
 }
 
 void ProjectSetWizard::createPage2()
 {
     m_iregSetPage = new QWizardPage(this);
+    m_iregSetPage->setButtonText(QWizard::NextButton,tr("Next"));
+    m_iregSetPage->setButtonText(QWizard::BackButton,tr("Back"));
+    m_iregSetPage->setButtonText(QWizard::CancelButton,tr("Cancel"));
+    m_iregSetPage->setButtonText(QWizard::HelpButton,tr("Help"));
+    m_iregSetPage->setButtonText(QWizard::FinishButton,tr("Finish"));
+#if 0
     m_iregSetPage->setTitle(QObject::tr("设置最大扫描链的寄存器个数"));
+#else
+    //m_iregSetPage->setTitle(QObject::tr("Setting max reg number Per-chain"));
+#endif
 
 
     ///////////test/////////////////
@@ -212,7 +252,7 @@ void ProjectSetWizard::createPage2()
     }
 #endif
     m_nregNumComBox = new QComboBox(this) ;
-    m_imaxregNumLabel = new QLabel("The Max Regnum Per Chain :",this);
+    m_imaxregNumLabel = new QLabel("The max register number per-chain :",this);
 
     m_imaxregNumLabel->setBuddy(m_imaxregNumLabel);
     layout->addWidget(m_imaxregNumLabel, 0, 0, 1, 1,Qt::AlignLeft);
@@ -242,22 +282,41 @@ void ProjectSetWizard::createPage2()
 void ProjectSetWizard::createConclusionPage()
 {
     m_itoolSetPage = new QWizardPage(this);
-    m_itoolSetPage->setTitle(QObject::tr("设置所用FPGA类型"));
+    m_itoolSetPage->setButtonText(QWizard::NextButton,tr("Next"));
+    m_itoolSetPage->setButtonText(QWizard::BackButton,tr("Back"));
+    m_itoolSetPage->setButtonText(QWizard::CancelButton,tr("Cancel"));
+    m_itoolSetPage->setButtonText(QWizard::HelpButton,tr("Help"));
+    m_itoolSetPage->setButtonText(QWizard::FinishButton,tr("Finish"));
 
-    #if 0
+
+#if 0
+    m_itoolSetPage->setTitle(QObject::tr("设置所用FPGA类型"));
+#else
+    //m_itoolSetPage->setTitle(QObject::tr("Setting FPGA type"));
+#endif
+
+
+
+#if 0
     QLabel *languageLabel = new QLabel(tr("所使用编程语言:"));
     QCheckBox *verilogCheckBox = new QCheckBox(tr("Verilog"));
     QCheckBox *vhdlCheckBox = new QCheckBox(tr("VHDL"));
 
     QLabel *slotLabel = new QLabel(tr("所使用计数器时钟:"));
     slotComboBox = createComboBox(tr(""));
-    #endif
+#endif
 
     //添加各个时钟。。。。
+#if 0
     QLabel *fpgaLabel = new QLabel(tr("所使用FPGA:"));
+#else
+    QLabel *fpgaLabel = new QLabel(tr("The FPGA type:"));
+#endif
+
     alteraCheckBox = new QRadioButton(tr("Altera"),this);
     xilinxCheckBox = new QRadioButton(tr("Xilinx"),this);
 
+    alteraCheckBox->setEnabled(false);
     alteraCheckBox->setCheckable(true);
     xilinxCheckBox->setCheckable(true);
 
